@@ -1,0 +1,4 @@
+0. from 3x3 up to 9x9
+1. 2D array
+2. greet(), specifically a printf function again
+3. draw, move, etc.

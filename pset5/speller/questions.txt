@@ -1,0 +1,20 @@
+0.  an invented long word said to mean a lung disease caused by inhaling very fine ash and sand dust.
+1.  returns usage of specified resource that we can declare in a few ways (basically returns the usage statistic of the who variable into the rusage 
+    struct (do a man getrusage in a linux terminal)
+2.  By standard, rusage has 16 variables, 14 of which are long types, and 2 of them being timeval struct type variables
+3.  Because before and after are of type struct rusage and we want to take only one of the properties' values that is contained within before and after
+4.  In each iteration it checks/scans each character in the line and store valid characters/letter in the word[] array, one by one per index. (i.e.
+    starting from index 0). If during scanning it detects a number, then the word is invalid and it will be ignored, thus not counted into the word 
+    counter, and loop would go to next iteration. This will also occur if the word length is deemed to long to be a word (from the definitions, 
+    this would mean that if there are more than 45 characters in that line, than that is not a valid word). However if index pointer has reached a 
+    point where the character is not a proper letter or valid alphabet, and all the previous requirements (i.e. length not too long and so far no 
+    numbers detected), then it is decided that the word is proper. The loop then proceeds to call check, to see whether the word in the word is 
+    mispelled or not, in which case the mispelled word is printed as well as adding it to the word counter. If iteration is successful, then the loop
+    goes to the next iteration to scan for the next word/line and so on until the end of file
+5.  fscanf would require us to get a string each line, and thus to detect EOF and any of the characters for a mispelling would mean we need to iterate 
+    over each string per line. Since looping over a file would still likely require us to do a while or for loop, this would invoke a secondary for or
+    while loop per line for each scanned word, effectively meaning an O(n^2) run time compared to the much faster linear runtime that we get for per 
+    character scanning.
+6.  Because we want to give the arguments of the functions (a dictionary into load, and a word into check, respectively), without changing the actual
+    content of the arguments (i.e. we have no intention of changing the actual content of the dictionary or word that we load). Hence the constant
+    declaration for it.

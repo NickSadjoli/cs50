@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+import sys
+import nltk
+import os
+
+import helpers ##necessary to get the get_user_timeline function
+from analyzer import Analyzer #notice difference of doing this against just blatantly importing a module below (compare the imports of helpers vs analyzer!)
+from termcolor import colored
+
+def main():
+    #ensure only 1 argument is received
+    if len(sys.argv) != 2:
+        sys.exit("Usage: ./tweets screen_name")
+    
+    #remember to split the @ from the username first!
+    screen_name=sys.argv[1].strip('@')
+        
+    tweets = helpers.get_user_timeline(screen_name,50)
+    
+    if tweets is None:
+        sys.exit("Didn't get valid tweets from username. Make sure it is a valid one! \n")
+    else:
+        tokenizer = nltk.tokenize.TweetTokenizer()
+        
+        # tweets now contain a list of the user's last 50 tweets, thanks to get_user_timeline from helper.
+        # all we need to do now is to iterate into each tweet, tokenize it into smaller texts, and input it into analyzer
+        
+        # initialize positive and negative dictionaries first
+        positives = os.path.join(sys.path[0], "positive-words.txt")
+        negatives = os.path.join(sys.path[0], "negative-words.txt")
+    
+        # instantiate analyzer and score
+        analyzer = Analyzer(positives, negatives)
+        score = 0
+    
+        # analyze and iterate for each tweets tweets
+        for tweet in tweets:
+            texts = tokenizer.tokenize(tweet) # this tokenize each tweet into smaller text tokens, which are then passed on to analyzer (which then
+                                             # tokenizes the texts further to be analyzed more easily)
+            for text in texts:
+                score += analyzer.analyze(text)
+            if score > 0.0:
+                ## tweet is positive, green
+                print(colored(score, "green"), colored(tweet,"green")) ## cannot put multiple strings into one colored() function, as per function 
+                                                                        # documentation
+            elif score < 0.0:
+                ## tweet is negative, red
+                print(colored(score, "red"), colored(tweet,"red"))
+            else:
+                ## tweet is neutral, yellow
+                print(colored(score, "yellow"), colored(tweet,"yellow"))
+                
+            score = 0 #reset for analysis on next tweets (otherwise, it will be cumulated lol)
+            
+if __name__ == "__main__":
+    main()
+
+        

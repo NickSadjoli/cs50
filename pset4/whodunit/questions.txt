@@ -1,0 +1,31 @@
+1.  Header/Library file that contains aliases for different integer type variables with specific width, macro limit, and macro 
+    functions needed to give value to these variables. 
+2.  Usage for declaring different types of integers with different sizes, in particular:
+    a. unin8_t --> declaring an unsigned integer type variable of width 8 bits
+    b. unint32_t --> declaring an unsigned integer type variable of width 32 bits
+    c. int32_t --> declaring an signed integer type variable of width 32 bits
+    d. unint16_t --> declaing an unsigned integer type variable of width 16 bits
+3.  For:
+    a. BYTE --> 1 byte(s)
+    b. DWORD --> 4 byte(s)
+    c. LONG --> 4 byte(s)
+    d. WORD --> 2 byte(s) 
+4.  For BMP, leading bytes (bfType as seen in definiton of MSDN) needs to be of char 'BM'. In ASCII, this is equivalent to 66 and 77 (in decimal),
+    or in hexadecimal meaning 0x000042 (or '66' for B) and 0x00004d (or '77' for M). Of course, when a script is reading, it will read from M to B 
+    (in reverse order). Hence the actual leading bytes are 0x4d42.
+5.  bfSize: size of bitmap file in bytes.
+    biSize: size of a particular structure (not the file itself) in bytes.
+6.  Meaning that he file is a top-down (starting from the upper-left of the file) DIB file. Note that it also means that the file cannot be 
+    compressed, and that the biCompression field needs to be either BI_RGB or BI_BITFILEDS.
+7.  biBitCount, needs to be of value 0, 1, 2, 4 ,8, 16, 24, or 32.
+8.  Because the filename given by the infile variable might not exist (in which case then there is no file to try to open, thus a NULL). 
+    Sanity checking like this important btw!
+9.  Because we only read one element of mentioned BMFILEHEADER and BMINFOHEADER size, to be inputted into both bf and bi variables.
+10. biWidth specifies the width of bitmap in pixels. Thus for line 65, this would yield padding of 3
+11. fseek specifically sets the pointer in the file to be offsetted by the amount of padding (or offset) from a certain position specified
+    in the end of the call. Positions possible are:
+    a. SEEK_SET --> offsets pointer from the beginning of the file
+    b. SEEK_CUR --> offsets pointer from the current position of the pointer in the file
+    c. SEEK_END --> offsets pointer from the end of the file
+12. SEEK_CUR indicates that the pointer is going to be offsetted from the current position within the file.
+
